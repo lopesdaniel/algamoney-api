@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.algamoney.api.event.RecursoCriadoEvent;
 import br.com.algamoney.api.model.Lancamento;
 import br.com.algamoney.api.repository.LancamentoRepository;
+import br.com.algamoney.api.service.LancamentoService;
 
 @RestController
 @RequestMapping("/lancamentos")
@@ -29,6 +30,9 @@ public class LancamentoResource {
 	
 	@Autowired
 	private ApplicationEventPublisher publisher;
+	
+	@Autowired
+	private LancamentoService lancamentoService;
 	
 	@GetMapping
 	public List<Lancamento> listar(){
@@ -44,7 +48,7 @@ public class LancamentoResource {
 	
 	@PostMapping
 	public ResponseEntity<Lancamento> criar(@RequestBody @Valid Lancamento lancamento, HttpServletResponse response){
-		Lancamento lancamentoSalvo = lancamentoRepository.save(lancamento);
+		Lancamento lancamentoSalvo = lancamentoService.salvar(lancamento);
 		
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, lancamentoSalvo.getCodigo()));
 		

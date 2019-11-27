@@ -65,7 +65,7 @@
 			<artifactId>jackson-datatype-jsr310</artifactId>
 		</dependency>
 		
-		
+		<!-- Melhorar a descrição do erro (ExceptionHandler)-->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
