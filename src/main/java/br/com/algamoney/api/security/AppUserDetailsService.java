@@ -26,11 +26,11 @@ public class AppUserDetailsService implements UserDetailsService{
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-		Optional<Usuario> usuariOptional = usuarioRepository.findByEmail(email);
+		Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(email);
 		
-		Usuario usuario = usuariOptional.orElseThrow(() -> new UsernameNotFoundException("Usuário e/ou senha inválidos."));
-	
-		return new User(email, usuario.getSenha(), getPermissoes(usuario));
+		Usuario usuario = usuarioOptional.orElseThrow(() -> new UsernameNotFoundException("Usuário e/ou senha incorretos"));
+		
+		return new UsuarioSistema(usuario, getPermissoes(usuario));
 	}
 
 	private Collection<? extends GrantedAuthority> getPermissoes(Usuario usuario) {
