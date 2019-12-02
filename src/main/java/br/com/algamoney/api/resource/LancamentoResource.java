@@ -1,5 +1,8 @@
 package br.com.algamoney.api.resource;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -20,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.algamoney.api.dto.LancamentoEstatisticaCategoria;
+import br.com.algamoney.api.dto.LancamentoEstatisticaDia;
 import br.com.algamoney.api.event.RecursoCriadoEvent;
 import br.com.algamoney.api.model.Lancamento;
 import br.com.algamoney.api.repository.LancamentoRepository;
@@ -39,6 +44,18 @@ public class LancamentoResource {
 	
 	@Autowired
 	private LancamentoService lancamentoService;
+	
+	@GetMapping("estatisticas/por-dia")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
+	public List<LancamentoEstatisticaDia> porDia(){
+		return this.lancamentoRepository.porDia(LocalDate.now());
+	}
+	
+	@GetMapping("estatisticas/por-categoria")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
+	public List<LancamentoEstatisticaCategoria> porCategoria(){
+		return this.lancamentoRepository.porCategoria(LocalDate.now());
+	}
 	
 	@GetMapping
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
